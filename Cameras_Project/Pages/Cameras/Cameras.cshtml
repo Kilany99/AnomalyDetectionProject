@@ -1,0 +1,365 @@
+﻿@page
+@model Cameras_Project.Pages.CamerasModel
+@{
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <script>
+        let tabs = document.querySelectorAll(".tabs li");
+        let tabsArray = Array.from(tabs);
+        let divs = document.querySelectorAll(".content > #div11");
+        let divsArray = Array.from(divs);
+
+        // console.log(tabsArray);
+
+        tabsArray.forEach((ele) => {
+            ele.addEventListener("click", function (e) {
+                // console.log(ele);
+                tabsArray.forEach((ele) => {
+                    ele.classList.remove("active");
+                });
+                e.currentTarget.classList.add("active");
+                divsArray.forEach((div) => {
+                    div.style.display = "none";
+                });
+                // console.log(e.currentTarget.dataset.cont);
+                document.querySelector(e.currentTarget.dataset.cont).style.display = "block";
+            });
+        });
+    </script>
+    <style>
+        /* CSS comes here */
+        #video {
+            border: 1px solid black;
+            width: 320px;
+            height: 240px;
+        }
+
+        #photo {
+            border: 1px solid black;
+            width: 320px;
+            height: 240px;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        .camera {
+            width: 340px;
+            display: inline-block;
+        }
+
+        .output {
+            width: 340px;
+            display: inline-block;
+        }
+
+        #startbutton {
+            display: block;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            bottom: 36px;
+            padding: 5px;
+            background-color: #6a67ce;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 1.0);
+            cursor: pointer;
+        }
+        .tabs li {
+            text-decoration: none;
+            margin-left: 10px;
+            width: calc((100% - 40px) / 3);
+            float: left;
+            padding-top: 10px;
+            overflow: hidden;
+            height: 30px;
+            background-color: #FFbb00;
+            border: 0.5px solid rgba(22, 22, 22, 0.7);
+            font-size: 18px;
+            color: rgba(22, 22, 22, 0.7);
+            cursor: pointer;
+            display: block;
+            list-style: none;
+            text-align:center;
+        }
+        .content > #div11:not(:first-child) {
+            display: none;
+        }
+        .tabs li.active,
+        .tabs li:hover {
+            background-color: #FFa000;
+        }
+        .tabs {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #go1 {
+            background-color: #6a67ce;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 1.0);
+            cursor: pointer;
+        }
+
+        #d1 {
+            position:fixed;
+        }
+
+        .contentarea1, .contentarea2, .contentarea3 {
+            font-size: 16px;
+            font-family: Arial;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <ul class="tabs">
+        <li class="active" data-cont=".contentarea1">Camera 1</li>
+        <li data-cont=".contentarea2">Camera 2</li>
+        <li data-cont=".contentarea3">Camera 3</li>
+    </ul>
+    <div class="content">
+
+        <div class="contentarea1" id="div11">
+            <h1>
+                Streamed Webcam:   <span style="font-weight: bold; color: #FFbb00;">Camera One</span>
+            </h1>
+            <br />
+            <div class="camera">
+                <video id="video">Video stream not available.</video>
+            </div>
+
+            <div><button id="startbutton" class="startbutton" renaut="server">Take photo</button></div>
+            <canvas id="canvas"></canvas>
+            <p>Cature Date: </p>
+            <asp:TextBox name="txtBox1" ID="datetime" AssociatedControlID="datetime" runat="server"></asp:TextBox>
+            <br />
+            <br />
+
+            <p>Camera IP: </p>
+            <asp:TextBox name="txtBox2" ID="cam-ip" AssociatedControlID="cam-ip" runat="server"></asp:TextBox>
+            <br />
+            <br />
+
+            <div class="output">
+                <img id="photo" renaut="server" alt="The screen capture will appear in this box." />
+            </div>
+
+            <br />
+            <div id="d1">
+                <form method="post" id="frm">
+                    <button type="submit" name="send1" renaut="server" id="go1">send photo</button>
+                </form>
+            </div>
+        </div>
+
+        
+        
+
+
+    </div>
+
+            <script>
+                function getBase64Image(img) {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+
+                    var dataURL = canvas.toDataURL("image/png");
+                    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                }
+                $('#go1').on('click', function (e) {
+                    e.preventDefault();
+                    var img1 = getBase64Image(document.getElementById("photo"));
+                    var dt1 = document.getElementById('datetime').innerText ;
+                    alert(img1);
+                    alert(dt1);
+                    $.ajax({
+                        type: "POST",
+                        url: "https://192.168.1.4:443/api/values",
+                        data: { value: img1, dt: dt1, camIp: "192.168.1.34" },
+                        dataType: "json",
+                        success: OnSuccess,
+                        error: OnErrorCall
+                    });
+                    function OnSuccess() {
+                        alert("we are here! 1");
+                    }
+                    function OnErrorCall(response) {
+                        console.log(error);
+                        alert("we are here! 2");
+
+                    }
+                    var deviceId = "dp7uNWAnRLGDAjXvnzgeHz:APA91bFizj1F_PmQfCUJpaJHuZLllt2zVMku9wz6k6hMVF1rARRBQf7jMZWn5xIePnXndIHcxivQk096neKYkhuJ9SVKNIlv-Mb0uTZWg8D16KW2MX5oY5_FUmNCVYvfODc_bqFXp2kv";
+                    var isAndroiodDevice = true;
+                    var title = "Anomaly Detected!";
+                    var body = "anomaly type: Abuse. Click here to see more info."
+                    var JsonStringNotification = '{\n' +
+                        '"deviceId": ' + '"' + deviceId + '"'+ ","
+                        + '\n"isAndroiodDevice": ' + isAndroiodDevice + ","
+                        + '\n"title": ' + '"'+ title + '"'+ ","
+                        + '\n"body": ' + '"' + body + '"'+ "\n"
+                        + "}";
+                    var JsonStr = JSON.parse(JsonStringNotification);
+                    alert(JsonStringNotification);
+                    alert(JsonStr);
+                    $.ajax({
+                        type: "POST",
+                        url: "https://192.168.1.4/api/Notification/send",
+                        data: { NotificationModel: JsonStr },
+                        dataType: "json",
+                        success: OnSuccess1,
+                        error: OnErrorCall1
+                    });
+                    function OnSuccess1() {
+                        alert("we are here! 3");
+                    }
+                    function OnErrorCall1(response) {
+                        console.log(error);
+                        alert("we are here! 4");
+
+                    }
+                    
+
+                    $.ajax({
+                        type: "POST",
+                        url: "_Deafault.aspx/SendNotification",
+                        data: { clientToken: deviceId, title: "asdaweaw", body: "asdasewafds" },
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: OnSuccess1,
+                        error: OnErrorCall1
+                    });
+                    function OnSuccess1() {
+                        alert("we are here! 3");
+                    }
+                    function OnErrorCall1(response) {
+                        console.log(error);
+                        alert("we are here! 4");
+
+                    }
+
+                });
+
+                /* JS comes here */
+                (function () {
+
+                    var width = 320; // We will scale the photo width to this
+                    var height = 0; // This will be computed based on the input stream
+
+                    var streaming = false;
+
+                    var video = null;
+                    var canvas = null;
+                    var photo = null;
+                    var startbutton = null;
+
+                    function startup() {
+                        video = document.getElementById('video');
+                        canvas = document.getElementById('canvas');
+                        photo = document.getElementById('photo');
+                        startbutton = document.getElementById('startbutton');
+                        dateTime = document.getElementById("datetime");
+                        camIp = document.getElementById("cam-ip");
+                        navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        })
+                            .then(function (stream) {
+                                video.srcObject = stream;
+                                video.play();
+                            })
+                            .catch(function (err) {
+                                console.log("An error occurred: " + err);
+                            });
+
+                        video.addEventListener('canplay', function (ev) {
+                            if (!streaming) {
+                                height = video.videoHeight / (video.videoWidth / width);
+
+                                if (isNaN(height)) {
+                                    height = width / (4 / 3);
+                                }
+
+                                video.setAttribute('width', width);
+                                video.setAttribute('height', height);
+                                canvas.setAttribute('width', width);
+                                canvas.setAttribute('height', height);
+                                streaming = true;
+                            }
+                        }, false);
+
+                        startbutton.addEventListener('click', function (ev) {
+                            takepicture();
+                            takedatetime();
+                            getCameraIP();
+                            ev.preventDefault();
+
+
+                        }, false);
+
+                        clearphoto();
+                    }
+
+
+                    function clearphoto() {
+                        var context = canvas.getContext('2d');
+                        context.fillStyle = "#AAA";
+                        context.fillRect(0, 0, canvas.width, canvas.height);
+
+                        var data = canvas.toDataURL('image/png');
+                        photo.setAttribute('src', data);
+                    }
+                    function getCameraIP() {
+                        var ip1 = "192.168.3"
+                        document.getElementById('cam-ip').innerText = ip1;
+
+                    }
+
+                    function takepicture() {
+                        var context = canvas.getContext('2d');
+                        if (width && height) {
+                            canvas.width = width;
+                            canvas.height = height;
+                            context.drawImage(video, 0, 0, width, height);
+
+                            var data = canvas.toDataURL('image/png');
+                            photo.setAttribute('src', data);
+                        } else {
+                            clearphoto();
+                        }
+                    }
+
+
+                    window.addEventListener('load', startup, false);
+                })();
+
+                function takedatetime() {
+                    var today = new Date();
+
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                    var datentime = date + ' ' + time;
+                    document.getElementById('datetime').innerText = datentime;
+
+                }
+
+
+            </script>
+        </body>
+
+    </html>
+        

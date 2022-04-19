@@ -1,0 +1,95 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<PostedData>
+@{
+    ViewData["Title"] = "Anomaly History";
+}
+<head>
+    <style>
+     #t1 {
+    text-align: center;
+    margin: 10px;
+    border: none;
+    align-self: center;
+    width: 1000px;
+}
+    thead {
+        font-weight: 500;
+        border-bottom: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+
+
+    }
+    tr {
+        border-bottom: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+    }
+    td {
+        
+        padding: 10px;
+        width:100px;
+        height:50px;
+    }
+  
+
+    </style>
+</head>
+<body>
+<h1>Anomaly History</h1>
+
+    <table id ="t1">
+        <thead>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.PostedDataId)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.CrimeScreenshot)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.AnomalyDateTime)
+                </td>
+                 <td>
+                    @Html.DisplayNameFor(model => model.ActionType)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ActionPriority)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ZoneID)
+                </td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostedDataId)
+                </td>
+                 <td>
+                    <a asp-action="">click here to view</a>
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.AnomalyDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionPriority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZoneID)
+                </td>
+                
+
+            </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+</body>

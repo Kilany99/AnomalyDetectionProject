@@ -1,0 +1,83 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<Client>
+@{
+    ViewData["Title"] = "Clients";
+}
+<head>
+    <style>
+     #t1 {
+    text-align: center;
+    margin: 10px;
+    border: none;
+    align-self: center;
+    width: 1000px;
+}
+    thead {
+        font-weight: 500;
+        border-bottom: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+
+
+    }
+    tr {
+        border-bottom: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+    }
+    td {
+        
+        padding: 10px;
+        width:100px;
+        height:50px;
+    }
+  
+
+    </style>
+</head>
+<body>
+<h1>All Clients</h1>
+
+    <table id ="t1">
+        <thead>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.ClientId)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ClientName)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ZoneID)
+                </td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientId)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.ClientName)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.ZoneID)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit","Edit",new {id=item.ClientId})
+                
+                    @Html.ActionLink("Delete","Delete",new {id=item.ClientId})
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a asp-action="Add" class="btn btn-primary" style="align-self:center;">Add New Client</a>
+</body>

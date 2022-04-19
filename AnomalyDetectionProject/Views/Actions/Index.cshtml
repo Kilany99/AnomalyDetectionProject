@@ -1,0 +1,89 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<AnomalyDetectionProject.Models.Action>
+@{
+    ViewData["Title"] = "Actions";
+}
+<head>
+    <style>
+     #t1 {
+    text-align: center;
+    margin: 10px;
+    border: none;
+    align-self: center;
+    width: 1000px;
+}
+    thead {
+        font-weight: 500;
+        border-bottom: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+
+
+    }
+    tr {
+        border-bottom: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: black
+    }
+    td {
+        
+        padding: 10px;
+        width:100px;
+        height:50px;
+    }
+  
+
+    </style>
+</head>
+<body>
+<h1>Actions History</h1>
+
+    <table id ="t1">
+        <thead>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.ActionID)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ActionType)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ActionDateTime)
+                </td>
+                 <td>
+                    @Html.DisplayNameFor(model => model.MCUID)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.ClientID)
+                </td>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionID)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.ActionType)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.ActionDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MCUID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientID)
+                </td>
+                
+
+            </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+</body>

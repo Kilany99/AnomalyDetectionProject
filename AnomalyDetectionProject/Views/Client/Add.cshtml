@@ -1,0 +1,31 @@
+﻿
+@model Client
+@{
+    //ViewBag.Title["Title"] = Model != null ? "Edit":"Add";
+    ViewData["Title"] = "Modify Clients";
+}
+
+<h2>Modify Clients</h2>
+
+<form asp-action="Edit">
+    <div asp-validation-summary=All></div>
+    <div class="col-lg-2">
+    <label asp-for="ClientId" class= "control-label"></label>
+    <input asp-for="ClientId" class= "form-cotrol" readonly />
+    </div>
+    <div class="col-lg-2">
+    <label asp-for="ClientName" class= "control-label"></label>
+    <input asp-for="ClientName" class= "form-cotrol"  />
+    </div>
+    <div class="col-lg-2">
+    <label asp-for="Password" class= "control-label"></label>
+    <input asp-for="Password" class= "form-cotrol"  />
+    </div>
+    <div class="col-lg-2">
+    <option value="">Select Zone</option>
+    <select asp-for="ZoneID" asp-items= "@(new SelectList(ViewBag.camera,"CameraZoneID","ZoneDescription"))" class = "form-control"></select>
+    </div>
+
+    <input type="submit" value="save" class="btn btn-primary" />
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
